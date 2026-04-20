@@ -1,0 +1,38 @@
+model:
+  name: "deeplabv3"
+  backbone: "resnet50"
+  pretrained: true
+  out_channels: 1
+  freeze_backbone_epochs: 5
+
+data:
+  data_dir: "data/chest_xray"
+  image_size: 256
+  batch_size: 8
+  num_workers: 4
+  augmentation:
+    horizontal_flip: true
+    rotation_limit: 15
+    elastic_transform: true
+    clahe: true
+    brightness_limit: 0.15
+    contrast_limit: 0.15
+
+training:
+  epochs: 40
+  learning_rate: 0.0003
+  weight_decay: 0.01
+  optimizer: "adamw"
+  scheduler: "cosine"
+  loss: "dice_bce"
+  early_stopping:
+    patience: 10
+    min_delta: 0.001
+
+mlflow:
+  experiment_name: "chest-xray-segmentation"
+  run_name: "deeplabv3-resnet50"
+  tags:
+    model_type: "deeplabv3"
+    pretrained: "true"
+    backbone: "resnet50"
