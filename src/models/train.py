@@ -129,7 +129,7 @@ def train(config_path):
 
         model = create_model(config).to(device)
         total_params = sum(p.numel() for p in model.parameters())
-        print(f"📦 Model: {config['model']['name']} ({total_params:,} params)")
+        print(f"Model: {config['model']['name']} ({total_params:,} params)")
         mlflow.log_param("total_params", total_params)
 
         freeze_epochs = config["model"].get("freeze_backbone_epochs", 0)
@@ -180,16 +180,16 @@ def train(config_path):
                             "val_dice": best_dice, "config": config}, save_path)
                 mlflow.pytorch.log_model(model, "best_model")
                 mlflow.log_metric("best_val_dice", best_dice)
-                print(f"  💾 Best model saved (Dice: {best_dice:.4f})")
+                print(f"  Best model saved (Dice: {best_dice:.4f})")
             else:
                 patience_counter += 1
-                print(f"  ⏳ No improvement ({patience_counter}/{es['patience']})")
+                print(f"  No improvement ({patience_counter}/{es['patience']})")
 
             if patience_counter >= es["patience"]:
-                print(f"\n🛑 Early stopping at epoch {epoch}")
+                print(f"\nEarly stopping at epoch {epoch}")
                 break
 
-        print(f"\n✅ Training complete! Best Dice: {best_dice:.4f}")
+        print(f"\nTraining complete. Best Dice: {best_dice:.4f}")
 
 
 if __name__ == "__main__":

@@ -19,7 +19,7 @@ from src.models.deeplabv3 import DeepLabV3Segmenter
 
 
 def load_model(checkpoint_path, device="cpu"):
-    checkpoint = torch.load(checkpoint_path, map_location=device)
+    checkpoint = torch.load(checkpoint_path, map_location=device, weights_only=False)
     config = checkpoint["config"]
     name = config["model"]["name"]
 
@@ -32,7 +32,7 @@ def load_model(checkpoint_path, device="cpu"):
     else:
         raise ValueError(f"Unknown model: {name}")
 
-    model.load_state_dict(checkpoint["model_state_dict"])
+    model.load_state_dict(checkpoint["model_state_dict"], strict=False)
     model.eval()
     model.to(device)
     return model, config
@@ -47,7 +47,7 @@ for name in ["best_unet.pt", "best_deeplabv3.pt"]:
     if ckpt.exists():
         model, cfg = load_model(str(ckpt), device)
         image_size = cfg["data"]["image_size"]
-        print(f"✅ Loaded {name} on {device}")
+        print(f"Loaded {name} on {device}")
         break
 
 
