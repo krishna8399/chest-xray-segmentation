@@ -6,6 +6,7 @@ Usage:
 """
 
 import argparse
+import os
 import sys
 from pathlib import Path
 
@@ -102,8 +103,12 @@ def validate(model, dataloader, criterion, device):
 def train(config_path):
     config = load_config(config_path)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    print(f"🖥️  Device: {device}")
+    print(f"Device: {device}")
 
+    # Pin tracking to project root so mlruns/ is always in the same place
+    # regardless of which directory the script is run from.
+    project_root = Path(__file__).parent.parent.parent
+    mlflow.set_tracking_uri(f"file:{project_root / 'mlruns'}")
     mlflow.set_experiment(config["mlflow"]["experiment_name"])
 
     with mlflow.start_run(run_name=config["mlflow"]["run_name"]):

@@ -18,8 +18,7 @@ def get_train_transforms(image_size=256):
     return A.Compose([
         A.Resize(image_size, image_size),
         A.HorizontalFlip(p=0.5),
-        A.Affine(translate_percent=0.1, scale=(0.85, 1.15), rotate=(-15, 15),
-                 mode=cv2.BORDER_CONSTANT, p=0.5),
+        A.Affine(translate_percent=0.1, scale=(0.85, 1.15), rotate=(-15, 15), p=0.5),
         A.ElasticTransform(alpha=120, sigma=120 * 0.05, p=0.3),
         A.RandomBrightnessContrast(brightness_limit=0.15, contrast_limit=0.15, p=0.3),
         A.GaussNoise(std_range=(0.02, 0.11), p=0.2),
@@ -52,7 +51,7 @@ class ChestXrayDataset(Dataset):
 
         self.image_paths = [self.image_dir / image_stems[s] for s in common]
         self.mask_paths = [self.mask_dir / mask_stems[s] for s in common]
-        print(f"📁 Loaded {len(self.image_paths)} image-mask pairs")
+        print(f"Loaded {len(self.image_paths)} image-mask pairs")
 
     def __len__(self):
         return len(self.image_paths)

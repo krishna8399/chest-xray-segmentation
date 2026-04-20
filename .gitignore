@@ -3,6 +3,8 @@ models/checkpoints/
 *.pt
 *.pth
 mlruns/
+mlflow.db
+BUILD_GUIDE.md
 __pycache__/
 *.pyc
 .env
