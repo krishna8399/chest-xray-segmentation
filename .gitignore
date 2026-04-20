@@ -1,0 +1,16 @@
+/data/
+models/checkpoints/
+*.pt
+*.pth
+mlruns/
+__pycache__/
+*.pyc
+.env
+.venv/
+venv/
+.vscode/
+.idea/
+.DS_Store
+*.log
+tmp/
+.ipynb_checkpoints/

@@ -1,0 +1,36 @@
+model:
+  name: "unet"
+  in_channels: 1
+  out_channels: 1
+  features: [64, 128, 256, 512]
+
+data:
+  data_dir: "data/chest_xray"
+  image_size: 256
+  batch_size: 8
+  num_workers: 4
+  augmentation:
+    horizontal_flip: true
+    rotation_limit: 15
+    elastic_transform: true
+    clahe: true
+    brightness_limit: 0.15
+    contrast_limit: 0.15
+
+training:
+  epochs: 50
+  learning_rate: 0.001
+  weight_decay: 0.0001
+  optimizer: "adam"
+  scheduler: "cosine"
+  loss: "dice_bce"
+  early_stopping:
+    patience: 10
+    min_delta: 0.001
+
+mlflow:
+  experiment_name: "chest-xray-segmentation"
+  run_name: "unet-scratch"
+  tags:
+    model_type: "unet"
+    pretrained: "false"
